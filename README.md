@@ -1,20 +1,24 @@
-# Bloxstrap Mobile Helper
+# GAME HUB 2.0 - COMANDOS ROBLOX A13
 
-Helper simples pra Roblox mobile/Android TV.
+# MODO DESEMPENHO / RESOLUÇÃO BAIXA
+wm size 720x1600
+wm density 240
+settings put global window_animation_scale 0.5
+settings put global transition_animation_scale 0.5
+settings put global animator_duration_scale 0.5
 
-## Como gerar o APK pelo GitHub
+# ABRIR ROBLOX
+monkey -p com.roblox.client 1
 
-1. Crie um repositório novo no GitHub.
-2. Envie todos os arquivos deste projeto.
-3. Vá na aba **Actions**.
-4. Abra **Build Android APK**.
-5. Aperte **Run workflow**.
-6. Depois que terminar, baixe o arquivo em **Artifacts**.
+# MODO NORMAL / RESTAURAR
+wm size reset
+wm density reset
+settings put global window_animation_scale 1
+settings put global transition_animation_scale 1
+settings put global animator_duration_scale 1
 
-O APK gerado vai aparecer como:
+# LIMPAR CACHE DO ROBLOX
+pm trim-caches 999G
 
-`Bloxstrap-Mobile-Helper-APK`
-
-## Aviso
-
-Esse app não hackeia Roblox. Ele só mostra presets, copia JSON e ajuda a abrir o Roblox.
+# FORÇAR PARAR ROBLOX
+am force-stop com.roblox.client
