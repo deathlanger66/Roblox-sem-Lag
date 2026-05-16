@@ -11,5 +11,7 @@
     "@capacitor/cli": "^6.1.2",
     "@capacitor/core": "^6.1.2"
   },
-  "devDependencies": {}
+  "devDependencies": {
+    "typescript": "^5.4.5"
+  }
 }
