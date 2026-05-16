@@ -1,10 +1,10 @@
-
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Bloxstrap Mobile Helper</title>
+  <title>RoBoost</title>
+
   <style>
     * {
       box-sizing: border-box;
@@ -13,9 +13,9 @@
 
     body {
       margin: 0;
+      padding: 18px;
       background: #0b0b0f;
       color: white;
-      padding: 18px;
     }
 
     .app {
@@ -23,96 +23,129 @@
       margin: auto;
     }
 
-    .header {
-      background: linear-gradient(135deg, #1d1d2b, #111118);
-      border: 1px solid #2d2d3d;
+    .card {
+      background: #15151e;
+      border: 1px solid #292938;
       border-radius: 22px;
       padding: 20px;
-      margin-bottom: 16px;
+      margin-bottom: 18px;
+    }
+
+    .header {
+      background: linear-gradient(135deg, #1d1d2b, #111118);
     }
 
     h1 {
       margin: 0;
-      font-size: 25px;
+      font-size: 26px;
     }
 
     h2 {
-      font-size: 18px;
+      margin-bottom: 16px;
     }
 
-    .card {
-      background: #15151e;
-      border: 1px solid #292938;
-      border-radius: 20px;
-      padding: 16px;
-      margin-bottom: 14px;
+    p {
+      color: #c7c7d4;
+      font-size: 15px;
     }
 
     button {
       width: 100%;
       border: none;
-      border-radius: 15px;
-      padding: 14px;
-      margin-top: 10px;
+      border-radius: 18px;
+      padding: 16px;
+      margin-top: 12px;
       background: #2d6bff;
       color: white;
+      font-size: 17px;
       font-weight: bold;
-      font-size: 15px;
     }
 
     textarea {
       width: 100%;
-      height: 170px;
+      height: 180px;
       background: #08080d;
       color: white;
-      border-radius: 14px;
-      padding: 12px;
+      border: 1px solid #333;
+      border-radius: 16px;
+      padding: 14px;
       resize: none;
+      font-size: 13px;
     }
   </style>
 </head>
+
 <body>
   <main class="app">
-    <section class="header">
-      <h1>Bloxstrap Mobile Helper</h1>
-      <p>Helper de FPS pro Roblox Mobile</p>
+
+    <section class="card header">
+      <h1>RoBoost</h1>
+      <p>FPS Helper pro Roblox Mobile</p>
     </section>
 
     <section class="card">
       <h2>Presets</h2>
-      <button onclick="setPreset('potato')">Potato FPS</button>
-      <button onclick="setPreset('balanced')">Balanced</button>
-      <button onclick="setPreset('max')">FPS Max</button>
+      <button id="potatoBtn">Potato FPS</button>
+      <button id="balancedBtn">Balanced</button>
+      <button id="maxBtn">FPS Max</button>
     </section>
 
     <section class="card">
       <h2>Config</h2>
       <textarea id="output">{}</textarea>
-      <button onclick="copyConfig()">Copiar</button>
+      <button id="copyBtn">Copiar Config</button>
     </section>
 
     <section class="card">
-      <button onclick="openRoblox()">Abrir Roblox</button>
+      <button id="openBtn">Abrir Roblox</button>
     </section>
+
   </main>
 
   <script>
+    const output = document.getElementById("output");
+
     const presets = {
       potato: {
         "DFIntTaskSchedulerTargetFps": "60",
+        "FFlagDisablePostFx": "True",
+        "FIntRenderShadowIntensity": "0"
+      },
+
+      balanced: {
+        "DFIntTaskSchedulerTargetFps": "60",
         "FFlagDisablePostFx": "True"
       },
-      balanced: {
-        "DFIntTaskSchedulerTargetFps": "60"
-      },
+
       max: {
-        "DFIntTaskSchedulerTargetFps": "120"
+        "DFIntTaskSchedulerTargetFps": "120",
+        "FFlagDisablePostFx": "True",
+        "FIntRenderShadowIntensity": "0"
       }
     };
 
-    function setPreset(name) {
-      document.getElementById("output").value =
-        JSON.stringify(presets[name], null, 2);
-    }
+    document.getElementById("potatoBtn").addEventListener("click", function () {
+      output.value = JSON.stringify(presets.potato, null, 2);
+    });
 
-    function copyConfig() {
+    document.getElementById("balancedBtn").addEventListener("click", function () {
+      output.value = JSON.stringify(presets.balanced, null, 2);
+    });
+
+    document.getElementById("maxBtn").addEventListener("click", function () {
+      output.value = JSON.stringify(presets.max, null, 2);
+    });
+
+    document.getElementById("copyBtn").addEventListener("click", function () {
+      output.select();
+      document.execCommand("copy");
+      alert("Config copiada!");
+    });
+
+    document.getElementById("openBtn").addEventListener("click", function () {
+      window.location.href = "roblox://";
+    });
+  </script>
+
+</body>
+</html>
