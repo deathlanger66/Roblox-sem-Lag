@@ -4,74 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>RoBoost</title>
-
   <style>
-    * {
-      box-sizing: border-box;
-      font-family: Arial, sans-serif;
-    }
-
-    body {
-      margin: 0;
-      padding: 18px;
-      background: #0b0b0f;
-      color: white;
-    }
-
-    .app {
-      max-width: 430px;
-      margin: auto;
-    }
-
-    .card {
-      background: #15151e;
-      border: 1px solid #292938;
-      border-radius: 22px;
-      padding: 20px;
-      margin-bottom: 18px;
-    }
-
-    .header {
-      background: linear-gradient(135deg, #1d1d2b, #111118);
-    }
-
-    h1 {
-      margin: 0;
-      font-size: 26px;
-    }
-
-    h2 {
-      margin-bottom: 16px;
-    }
-
-    p {
-      color: #c7c7d4;
-      font-size: 15px;
-    }
-
-    button {
-      width: 100%;
-      border: none;
-      border-radius: 18px;
-      padding: 16px;
-      margin-top: 12px;
-      background: #2d6bff;
-      color: white;
-      font-size: 17px;
-      font-weight: bold;
-    }
-
-    textarea {
-      width: 100%;
-      height: 180px;
-      background: #08080d;
-      color: white;
-      border: 1px solid #333;
-      border-radius: 16px;
-      padding: 14px;
-      resize: none;
-      font-size: 13px;
-    }
+    * { box-sizing: border-box; font-family: Arial, sans-serif; }
+    body { margin: 0; padding: 18px; background: #0b0b0f; color: white; }
+    .app { max-width: 430px; margin: auto; }
+    .card { background: #15151e; border: 1px solid #292938; border-radius: 22px; padding: 20px; margin-bottom: 18px; }
+    .header { background: linear-gradient(135deg, #1d1d2b, #111118); }
+    h1 { margin: 0; font-size: 28px; }
+    h2 { margin-bottom: 14px; }
+    p { color: #c7c7d4; font-size: 15px; line-height: 1.4; }
+    button { width: 100%; border: none; border-radius: 18px; padding: 16px; margin-top: 12px; background: #2d6bff; color: white; font-size: 17px; font-weight: bold; }
+    textarea { width: 100%; height: 190px; background: #08080d; color: white; border: 1px solid #333; border-radius: 16px; padding: 14px; resize: none; font-size: 13px; }
+    #fpsCounter { margin-top: 14px; padding: 13px; border-radius: 16px; background: #08080d; color: #8cffb0; font-weight: bold; text-align: center; font-size: 20px; }
+    .status { padding: 12px; border-radius: 14px; background: #08080d; color: #aaaaff; margin-top: 10px; font-size: 14px; }
+    .warn { color: #ffcf70; font-size: 13px; }
   </style>
 </head>
 
@@ -81,6 +27,8 @@
     <section class="card header">
       <h1>RoBoost</h1>
       <p>FPS Helper pro Roblox Mobile</p>
+      <div id="fpsCounter">FPS: --</div>
+      <div class="status" id="status">Status: app iniciado</div>
     </section>
 
     <section class="card">
@@ -88,64 +36,110 @@
       <button id="potatoBtn">Potato FPS</button>
       <button id="balancedBtn">Balanced</button>
       <button id="maxBtn">FPS Max</button>
+      <button id="lowresBtn">Resolução Baixa</button>
+      <button id="ultralowBtn">Ultra Low / A13</button>
     </section>
 
     <section class="card">
-      <h2>Config</h2>
+      <h2>Config gerada</h2>
       <textarea id="output">{}</textarea>
       <button id="copyBtn">Copiar Config</button>
+      <p class="warn">Salve como ClientAppSettings.json quando for testar.</p>
     </section>
 
     <section class="card">
+      <h2>Roblox</h2>
       <button id="openBtn">Abrir Roblox</button>
+      <p class="warn">Obs: o FPS mostrado é do app. FPS real do Roblox precisa overlay nativo.</p>
     </section>
 
   </main>
 
   <script>
     const output = document.getElementById("output");
+    const statusText = document.getElementById("status");
 
     const presets = {
       potato: {
         "DFIntTaskSchedulerTargetFps": "60",
         "FFlagDisablePostFx": "True",
-        "FIntRenderShadowIntensity": "0"
+        "FIntRenderShadowIntensity": "0",
+        "FFlagDebugDisableTelemetryEphemeralCounter": "True",
+        "FFlagDebugDisableTelemetryEphemeralStat": "True"
       },
 
       balanced: {
         "DFIntTaskSchedulerTargetFps": "60",
-        "FFlagDisablePostFx": "True"
+        "FFlagDisablePostFx": "True",
+        "FIntRenderShadowIntensity": "1"
       },
 
       max: {
         "DFIntTaskSchedulerTargetFps": "120",
         "FFlagDisablePostFx": "True",
-        "FIntRenderShadowIntensity": "0"
+        "FIntRenderShadowIntensity": "0",
+        "FFlagDebugGraphicsPreferVulkan": "True"
+      },
+
+      lowres: {
+        "DFIntTaskSchedulerTargetFps": "60",
+        "FFlagDisablePostFx": "True",
+        "FIntRenderShadowIntensity": "0",
+        "DFFlagTextureQualityOverrideEnabled": "True",
+        "DFIntTextureQualityOverride": "0",
+        "FIntRenderTargetPoolMinSizeMB": "16"
+      },
+
+      ultralow: {
+        "DFIntTaskSchedulerTargetFps": "60",
+        "FFlagDisablePostFx": "True",
+        "FIntRenderShadowIntensity": "0",
+        "DFFlagTextureQualityOverrideEnabled": "True",
+        "DFIntTextureQualityOverride": "0",
+        "FIntDebugForceMSAASamples": "0",
+        "FIntRenderTargetPoolMinSizeMB": "8"
       }
     };
 
-    document.getElementById("potatoBtn").addEventListener("click", function () {
-      output.value = JSON.stringify(presets.potato, null, 2);
-    });
+    function applyPreset(name, label) {
+      output.value = JSON.stringify(presets[name], null, 2);
+      statusText.textContent = "Status: " + label + " selecionado";
+    }
 
-    document.getElementById("balancedBtn").addEventListener("click", function () {
-      output.value = JSON.stringify(presets.balanced, null, 2);
-    });
+    document.getElementById("potatoBtn").onclick = () => applyPreset("potato", "Potato FPS");
+    document.getElementById("balancedBtn").onclick = () => applyPreset("balanced", "Balanced");
+    document.getElementById("maxBtn").onclick = () => applyPreset("max", "FPS Max");
+    document.getElementById("lowresBtn").onclick = () => applyPreset("lowres", "Resolução Baixa");
+    document.getElementById("ultralowBtn").onclick = () => applyPreset("ultralow", "Ultra Low / A13");
 
-    document.getElementById("maxBtn").addEventListener("click", function () {
-      output.value = JSON.stringify(presets.max, null, 2);
-    });
-
-    document.getElementById("copyBtn").addEventListener("click", function () {
+    document.getElementById("copyBtn").onclick = () => {
       output.select();
       document.execCommand("copy");
+      statusText.textContent = "Status: configuração copiada";
       alert("Config copiada!");
-    });
+    };
 
-    document.getElementById("openBtn").addEventListener("click", function () {
+    document.getElementById("openBtn").onclick = () => {
+      statusText.textContent = "Status: abrindo Roblox...";
       window.location.href = "roblox://";
-    });
-  </script>
+    };
 
+    let lastTime = performance.now();
+    let frames = 0;
+
+    function fpsLoop(now) {
+      frames++;
+
+      if (now - lastTime >= 1000) {
+        document.getElementById("fpsCounter").textContent = "FPS: " + frames;
+        frames = 0;
+        lastTime = now;
+      }
+
+      requestAnimationFrame(fpsLoop);
+    }
+
+    requestAnimationFrame(fpsLoop);
+  </script>
 </body>
 </html>
